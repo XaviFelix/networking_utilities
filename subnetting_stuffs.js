@@ -4,7 +4,7 @@ const subnet_mask_2 = "255.255.240.0";
 const subnet_mask_3 = "255.255.0.255";
 const subnet_mask_4 = "255.253.0.0";
 
-//TODO: need to check for all octets to be filled in
+//TODO: need to check for all octets to be filled in (already set by my server tho)
 const subnet_mask_tests = [
     "255.255.255.0",
     "255.255.240.0",
@@ -13,8 +13,17 @@ const subnet_mask_tests = [
     "0.0.0.0"
 ];
 
+// IPV4 format checker
+function isValidIPv4(str) {
+    if (typeof str !== "string") return false;
+    var parts = str.trim().split(".");
+    if (parts.length !== 4) return false;
+    return parts.every(function (p) {
+        return /^(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])$/.test(p);
+    });
+}
 
-// validation logic
+// validation logic for subnet masks
 
 // time complex: O(b)
 const is_valid_mask = mask => {
@@ -54,10 +63,20 @@ const is_valid_mask_v2 = mask => {
 };
 
 
+//TODO: validation logic for ip/gatway ips.
+// 1) new IP must be in the network ID when combined with mask
+// 2) GW and device cannot use the network ID, host address or broadcast address
+// 3) both device IP and gateway IP cannot have the same IP!
+const current_ip = "192.168.10.45";
+const is_ip_inrange = ip => {
+    return true;
+};
+
+
 // run tests here
 subnet_mask_tests.forEach(mask => {
 
-    if(!is_valid_mask(mask)) {
+    if (!is_valid_mask_v2(mask)) {
         console.log(`${mask}\t\t is not a valid subnet mask!`);
     } else
         console.log(`${mask}\t\t is a valid subnet mask.`);
